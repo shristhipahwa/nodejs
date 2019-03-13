@@ -12,6 +12,8 @@ var leaderRouter = require("./routes/leaderRouter");
 
  const mongoose = require("mongoose");
  const Dishes = require("./models/dishes");
+ const Promotions = require("./models/promotions");
+ const Leaders = require("./models/leaders");
 
  const url = 'mongodb://localhost:27017/conFusion';
  const connect = mongoose.connect(url);
@@ -34,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/dishes",dishRouter);
-app.use("/promo" ,promoRouter);
+app.use("/promotions" ,promoRouter);
 app.use("/leaders",leaderRouter);
 
 
