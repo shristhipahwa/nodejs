@@ -63,7 +63,7 @@ dishRouter.route("/:dishId")
 
 .post(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
   res.statusCode=403;
-  res.end("put operation not supported on /dishes/"+ req.params.dishId);
+  res.end("post operation not supported on /dishes/"+ req.params.dishId);
 })
 
 .put(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
