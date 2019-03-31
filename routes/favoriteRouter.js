@@ -11,8 +11,8 @@ favoriteRouter.use(bodyParser.json());
 favoriteRouter.route("/")
 .options(cors.corsWithOptions , (req,res)=>{res.sendStatus(200);})
 
-.get(cors.corsWithOptions ,authenticate.verifyUser,(req,res,next)=>{
-  Favorites.findOne({user:req.user._id})
+.get(cors.cors ,authenticate.verifyUser,(req,res,next)=>{
+  Favorites.findone({user:req.user._id})
   .populate('user')
   .populate('dishes.dish')
   .then((favorites)=>{
@@ -60,7 +60,7 @@ else{
 })
 
 .delete(cors.corsWithOptions,authenticate.verifyUser,(req,res,next)=>{
-   Favorites.findByIdAndRemove({'user':req.user._id})
+   Favorites.findOneAndRemove({user:req.user._id})
    .then((resp)=>{
      res.statusCode=200;
      res.setHeader('Content-type','application/json');
@@ -72,12 +72,32 @@ else{
 favoriteRouter.route("/:dishId")
 .options(cors.corsWithOptions , (req,res)=>{res.sendStatus(200);})
 .get(cors.corsWithOptions,authenticate.verifyUser,(req,res,next)=>{
-  res.statusCode=403;
-  res.end("GET operation not supported on /favorites/"+req.params.dishId);
+  Favorites.findOne({user:req.user._id})
+  .then((favorites)=>{
+    if(!favorites){
+      res.statusCode=200;
+      res.setHeader('Content-Type',"application/json");
+      return res.json({'exists':false,'favorites':favorites});
+    }
+    else{
+      if(favorite.dishes.indexOf(req.params.dishId)<0){
+        res.statusCode=200;
+        res.setHeader('Content-Type',"application/json");
+        return res.json({'exists':false,'favorites':favorites});
+      }
+      else{
+        res.statusCode=200;
+        res.setHeader('Content-Type',"application/json");
+        return res.json({'exists':true,'favorites':favorites});
+      }
+    }
+
+  },(err)=>next(err))
+  .catch((err)=>next(err))
 })
 
 .post(cors.corsWithOptions,authenticate.verifyUser, (req,res,next)=>{
-  Favorite.findOne({'user':req.user._id})
+  Favorites.findOne({'user':req.user._id})
   .then((favorite)=>{
  if(favorite){
      if(favorite.dishes.indexOf(req.params.dishId)=== -1){
@@ -91,7 +111,7 @@ favorite.save()
 },(err)=>next(err));
 }}
 else{
-  Favorites.create({'user':req.user._id,"dishes":[req.params.dishId]})
+  Favorites.create({user:req.user._id,'dishes':[req.params.dishId]})
   .then((favorite)=>{
     console.log('favorite created',favorite);
     res.statusCode=200;
