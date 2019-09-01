@@ -18,10 +18,7 @@ var uploadRouter = require("./routes/uploadRouter");
 var favoriteRouter = require('./routes/favoriteRouter');
 
  const mongoose = require("mongoose");
- const Dishes = require("./models/dishes");
- const Promotions = require("./models/promotions");
- const Leaders = require("./models/leaders");
- const Favorites = require('./models/favorite');
+
 
  const url = config.mongoUrl;
  const connect = mongoose.connect(url);

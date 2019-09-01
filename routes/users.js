@@ -62,13 +62,13 @@ passport.authenticate('local',(err,user,info)=>{
   if(!user){
     res.statusCode = 401;
     res.setHeader('Content-Type','application/json');
-    res.json({success:false,status:' login unsuccessful!',err:info});
+    res.json({success:false,status:' Login Unsuccessful!',err:info});
   }
   req.logIn(user,(err)=>{
     if(err){
       res.statusCode = 401;
       res.setHeader('Content-Type','application/json');
-      res.json({success:false,status:' login unsuccessful!',err:'could not log in user!'});
+      res.json({success:false,status:' Login Unsuccessful!',err:'Could not log in user!'});
     }
 
   var token = authenticate.getToken({_id: req.user._id});

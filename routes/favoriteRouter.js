@@ -14,7 +14,7 @@ favoriteRouter.route("/")
 .get(cors.cors ,authenticate.verifyUser,(req,res,next)=>{
   Favorites.findone({user:req.user._id})
   .populate('user')
-  .populate('dishes.dish')
+  .populate('dishes')
   .then((favorites)=>{
      res.statusCode=200;
      res.setHeader('Content-type','application/json');
